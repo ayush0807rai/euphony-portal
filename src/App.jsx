@@ -472,7 +472,7 @@ export default function App() {
             Experience real-time 4-stem isolation, personalized smart playlists, and seamless listening on your browser or native apps.
           </p>
 
-          {/* Dual Action Buttons (Spotify Style Choice) */}
+          {/* Dual Action Buttons (Native App First) */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -481,9 +481,15 @@ export default function App() {
             flexWrap: 'wrap',
             marginBottom: '40px'
           }}>
-            {/* Primary Choice: Web Player */}
-            <button
-              onClick={handleOpenWebPlayer}
+            {/* Primary Choice: Direct Download Official Native App */}
+            <a
+              href={primaryPlatform.downloadUrl}
+              download={primaryPlatform.filename}
+              onClick={() => {
+                if (detectedDevice.os === 'android') {
+                  setActivePlatformModal(primaryPlatform);
+                }
+              }}
               className="btn-primary"
               style={{
                 padding: '16px 32px',
@@ -491,16 +497,18 @@ export default function App() {
                 fontSize: '16px',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '10px'
+                gap: '10px',
+                textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(0, 102, 255, 0.4)'
               }}
             >
-              <Play size={18} fill="#FFFFFF" />
-              <span>Open Web Player</span>
-            </button>
+              <Download size={18} color="#FFFFFF" />
+              <span>Download Native App for {detectedDevice.label}</span>
+            </a>
 
-            {/* Secondary Choice: Install Native App */}
-            <a
-              href="#download"
+            {/* Secondary Choice: Web Player */}
+            <button
+              onClick={handleOpenWebPlayer}
               className="btn-secondary"
               style={{
                 padding: '16px 28px',
@@ -511,9 +519,9 @@ export default function App() {
                 gap: '10px'
               }}
             >
-              <Download size={18} color="#0066FF" />
-              <span>Download for {detectedDevice.label}</span>
-            </a>
+              <Play size={18} fill="#0066FF" color="#0066FF" />
+              <span>Stream in Web Browser</span>
+            </button>
           </div>
 
           {/* Quick Metrics / Assurance Badges */}
@@ -1078,6 +1086,43 @@ export default function App() {
                 </span>
               </div>
             </div>
+
+            {/* Android Specific Content */}
+            {activePlatformModal.id === 'android' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '24px' }}>
+                <div style={{ padding: '14px', borderRadius: '14px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', fontSize: '13px', color: '#065F46', lineHeight: '1.5' }}>
+                  <strong>Real Native Android App (Like Spotify & ZArchiver):</strong> This installs directly from the official APK package onto your phone with its own app icon, background lock-screen audio, and <strong>zero browser address bars</strong>.
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <a
+                    href="/downloads/Euphony.apk"
+                    download="Euphony.apk"
+                    className="btn-primary"
+                    style={{ padding: '12px 18px', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none', background: 'linear-gradient(135deg, #10B981, #059669)' }}
+                  >
+                    <Download size={16} /> Download Euphony.apk (4.7 MB)
+                  </a>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: '#334155', lineHeight: '1.5' }}>
+                  <div style={{ background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Step 1: Download the Official APK</div>
+                    <span>When Chrome warns <em>"File might be harmful"</em>, tap <strong>"Download anyway"</strong>. (Euphony is 100% clean and verified).</span>
+                  </div>
+
+                  <div style={{ background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Step 2: Install from Notification or Downloads</div>
+                    <span>Swipe down your notification bar or open your <strong>Files / Downloads</strong> app, tap <strong>Euphony.apk</strong>, and tap <strong>"Install"</strong>. (If asked to allow unknown apps from this source, toggle allow).</span>
+                  </div>
+
+                  <div style={{ background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Step 3: Open Pure Native App</div>
+                    <span>Tap <strong>"Open"</strong>. Euphony will launch as a full native app directly from your phone's home screen — with NO browser URL bar and full lock-screen media controls!</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* iOS Specific Content */}
             {activePlatformModal.id === 'ios' && (

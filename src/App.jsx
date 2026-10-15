@@ -14,6 +14,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState('signin');
+  const [redirectAfterLogin, setRedirectAfterLogin] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activePlatformModal, setActivePlatformModal] = useState(null);
@@ -85,6 +86,7 @@ export default function App() {
   // Handle open web player (with auth check)
   const handleOpenWebPlayer = () => {
     if (!user) {
+      setRedirectAfterLogin(true);
       setAuthDefaultTab('signin');
       setAuthModalOpen(true);
     } else {
@@ -921,14 +923,18 @@ export default function App() {
       {/* ===================== AUTH MODAL ===================== */}
       <AuthModal
         isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
+        onClose={() => {
+          setAuthModalOpen(false);
+          setRedirectAfterLogin(false);
+        }}
         defaultTab={authDefaultTab}
         onAuthSuccess={(authedUser) => {
           setUser(authedUser);
           setAuthModalOpen(false);
-        }}
-        onRedirectToWebPlayer={() => {
-          window.open(WEB_PLAYER_URL, '_blank', 'noopener,noreferrer');
+          if (redirectAfterLogin) {
+            window.open(WEB_PLAYER_URL, '_blank', 'noopener,noreferrer');
+            setRedirectAfterLogin(false);
+          }
         }}
       />
 

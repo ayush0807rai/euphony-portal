@@ -34,8 +34,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, defaultTab =
         setSuccessMsg('Account created! Welcome to Euphony.');
         if (data?.session) {
           setTimeout(() => {
-            onAuthSuccess(data.session.user);
-            if (onRedirectToWebPlayer) onRedirectToWebPlayer();
+            if (onAuthSuccess) onAuthSuccess(data.session.user);
           }, 800);
         } else {
           setSuccessMsg('Account created! If confirmation is enabled, check your email to verify.');
@@ -49,8 +48,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, defaultTab =
         if (error) throw error;
         setSuccessMsg('Successfully signed in!');
         setTimeout(() => {
-          onAuthSuccess(data.user);
-          if (onRedirectToWebPlayer) onRedirectToWebPlayer();
+          if (onAuthSuccess) onAuthSuccess(data.user);
         }, 600);
       }
     } catch (err) {

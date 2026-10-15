@@ -13,3 +13,15 @@
   Content-Type: application/x-msdownload
   Content-Disposition: attachment; filename="Euphony-Setup.exe"
   Cache-Control: public, max-age=3600
+
+/downloads/*.mobileconfig
+  Content-Type: application/x-apple-aspen-config
+  Content-Disposition: attachment; filename="Euphony.mobileconfig"
+  Cache-Control: public, max-age=3600
+
+/downloads/*.zip
+  Content-Type: application/zip
+  Content-Disposition: attachment; filename="Euphony-mac.zip"
+  Cache-Control: public, max-age=3600
+
+

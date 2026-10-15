@@ -138,11 +138,11 @@ export default function App() {
       tagline: 'macOS 11+ (Apple Silicon & Intel)',
       icon: Apple,
       filename: 'Euphony-mac.zip',
-      size: 'Universal',
+      size: 'Universal App',
       version: 'v1.0.0',
-      downloadUrl: 'https://github.com/ayush0807rai/music-app/releases',
-      description: 'Tailored for macOS with support for Touch Bar, Apple Silicon (M1/M2/M3/M4), and macOS media keys.',
-      features: ['Apple Silicon native speed', 'CoreAudio ultra-low latency', 'Now Playing widget support', 'Zero system bloat']
+      downloadUrl: '/downloads/Euphony-mac.zip',
+      description: 'Standalone macOS application tailored for Apple Silicon & Intel with 1-click Gatekeeper bypass and Dock integration.',
+      features: ['Apple Silicon native speed', 'CoreAudio ultra-low latency', 'Gatekeeper bypass built-in', 'Add to Dock & Launchpad']
     },
     {
       id: 'android',
@@ -150,7 +150,7 @@ export default function App() {
       tagline: 'Android 7.0 and up',
       icon: Smartphone,
       filename: 'Euphony.apk',
-      size: '16.4 MB',
+      size: '4.7 MB',
       version: 'v1.0.0',
       downloadUrl: '/downloads/Euphony.apk',
       description: 'Official standalone Android package (.apk) with lock-screen notification player and background audio.',
@@ -161,12 +161,12 @@ export default function App() {
       name: 'iPhone & iPad',
       tagline: 'iOS 15.0 and up',
       icon: Apple,
-      filename: 'Euphony iOS App',
-      size: 'Instant',
+      filename: 'Euphony.mobileconfig',
+      size: 'WebClip Profile',
       version: 'v1.0.0',
-      downloadUrl: WEB_PLAYER_URL,
-      description: 'Native iOS package generated via Xcode & instant 1-tap Home Screen WebClip with full offline playback.',
-      features: ['Full screen native feel', 'Background audio playback', 'Haptic feedback support', 'Dynamic island now-playing']
+      downloadUrl: '/downloads/Euphony.mobileconfig',
+      description: 'Official Apple WebClip profile (.mobileconfig) & Safari 1-tap Home Screen install with full background audio.',
+      features: ['Direct WebClip profile install', 'Full screen native feel', 'Background audio playback', 'Bypasses App Store restrictions']
     }
   ];
 
@@ -789,22 +789,39 @@ export default function App() {
                 </div>
 
                 {p.id === 'windows' && (
-                  <a
-                    href={p.downloadUrl}
-                    download="Euphony-Setup.exe"
-                    className="btn-primary"
-                    style={{
-                      padding: '12px',
-                      borderRadius: '12px',
-                      fontSize: '14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                  >
-                    <Download size={16} /> Download .exe
-                  </a>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <a
+                      href={p.downloadUrl}
+                      download="Euphony-Setup.exe"
+                      className="btn-primary"
+                      style={{
+                        padding: '12px',
+                        borderRadius: '12px',
+                        fontSize: '14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px'
+                      }}
+                    >
+                      <Download size={16} /> Download .exe
+                    </a>
+                    <button
+                      onClick={() => setActivePlatformModal(p)}
+                      className="btn-secondary"
+                      style={{
+                        padding: '10px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <ShieldCheck size={14} /> SmartScreen Bypass Guide
+                    </button>
+                  </div>
                 )}
 
                 {p.id === 'android' && (
@@ -822,46 +839,80 @@ export default function App() {
                       gap: '8px'
                     }}
                   >
-                    <Download size={16} /> Download .apk
+                    <Download size={16} /> Download .apk (4.7 MB)
                   </a>
                 )}
 
                 {p.id === 'mac' && (
-                  <a
-                    href={p.downloadUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-secondary"
-                    style={{
-                      padding: '12px',
-                      borderRadius: '12px',
-                      fontSize: '14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                  >
-                    <ExternalLink size={16} /> Get for Mac
-                  </a>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <a
+                      href={p.downloadUrl}
+                      download="Euphony-mac.zip"
+                      className="btn-primary"
+                      style={{
+                        padding: '12px',
+                        borderRadius: '12px',
+                        fontSize: '14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px'
+                      }}
+                    >
+                      <Download size={16} /> Download for Mac (.zip)
+                    </a>
+                    <button
+                      onClick={() => setActivePlatformModal(p)}
+                      className="btn-secondary"
+                      style={{
+                        padding: '10px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Apple size={14} /> Gatekeeper & Dock Guide
+                    </button>
+                  </div>
                 )}
 
                 {p.id === 'ios' && (
-                  <button
-                    onClick={() => setActivePlatformModal(p)}
-                    className="btn-secondary"
-                    style={{
-                      padding: '12px',
-                      borderRadius: '12px',
-                      fontSize: '14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                  >
-                    <Smartphone size={16} /> Install on iOS
-                  </button>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <a
+                      href={p.downloadUrl}
+                      download="Euphony.mobileconfig"
+                      className="btn-primary"
+                      style={{
+                        padding: '12px',
+                        borderRadius: '12px',
+                        fontSize: '14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px'
+                      }}
+                    >
+                      <Download size={16} /> Download iOS App Profile
+                    </a>
+                    <button
+                      onClick={() => setActivePlatformModal(p)}
+                      className="btn-secondary"
+                      style={{
+                        padding: '10px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Smartphone size={14} /> 1-Tap Safari Home Screen Guide
+                    </button>
+                  </div>
                 )}
 
               </div>
@@ -959,7 +1010,7 @@ export default function App() {
         }}
       />
 
-      {/* ===================== PLATFORM DETAIL MODAL (iOS / Info) ===================== */}
+      {/* ===================== PLATFORM DETAIL MODAL (iOS, macOS, Windows Bypass) ===================== */}
       {activePlatformModal && (
         <div
           className="fade-in"
@@ -978,10 +1029,12 @@ export default function App() {
           onClick={() => setActivePlatformModal(null)}
         >
           <div
-            className="modal-pop"
+            className="modal-pop custom-scrollbar"
             style={{
               width: '100%',
-              maxWidth: '480px',
+              maxWidth: '520px',
+              maxHeight: '88vh',
+              overflowY: 'auto',
               background: '#FFFFFF',
               borderRadius: '24px',
               padding: '32px',
@@ -1011,41 +1064,126 @@ export default function App() {
               <X size={16} />
             </button>
 
+            {/* Modal Header */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#0066FF', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Apple size={26} />
+              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#0066FF', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {activePlatformModal.id === 'windows' ? <Monitor size={24} /> : activePlatformModal.id === 'android' ? <Smartphone size={24} /> : <Apple size={26} />}
               </div>
               <div>
-                <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0F172A', margin: 0 }}>Install on iPhone / iPad</h3>
-                <span style={{ fontSize: '12px', color: '#64748B' }}>1-Tap Home Screen App Experience</span>
+                <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0F172A', margin: 0 }}>
+                  {activePlatformModal.id === 'ios' ? 'Install on iPhone / iPad' : activePlatformModal.id === 'mac' ? 'Install on MacBook & Mac' : activePlatformModal.id === 'windows' ? 'Install on Windows' : 'Install on Android'}
+                </h3>
+                <span style={{ fontSize: '12px', color: '#0066FF', fontWeight: '700' }}>
+                  {activePlatformModal.id === 'ios' ? '⚡ Apple App Store Bypass Guide' : activePlatformModal.id === 'mac' ? '🛡️ Apple Gatekeeper Bypass Guide' : '🚀 Standalone Installation Guide'}
+                </span>
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '24px', fontSize: '13px', color: '#334155', lineHeight: '1.5' }}>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: '#0066FF', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', flexShrink: 0 }}>1</span>
-                <span>Open <strong>Safari</strong> on your iPhone or iPad and navigate to <strong>euphony-music.vercel.app</strong>.</span>
+            {/* iOS Specific Content */}
+            {activePlatformModal.id === 'ios' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '24px' }}>
+                <div style={{ padding: '14px', borderRadius: '14px', background: 'rgba(0, 102, 255, 0.08)', border: '1px solid rgba(0, 102, 255, 0.2)', fontSize: '13px', color: '#1E293B', lineHeight: '1.5' }}>
+                  <strong>How we bypass Apple restrictions:</strong> iOS blocks third-party app downloads outside the App Store. Euphony uses Apple’s official <strong>WebClip Configuration Profile</strong> and <strong>Home Screen Standalone Engine</strong> to install directly onto your device with full-screen experience and background audio!
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#0F172A' }}>Method 1: Direct WebClip Profile (Recommended)</div>
+                  <a
+                    href="/downloads/Euphony.mobileconfig"
+                    download="Euphony.mobileconfig"
+                    className="btn-primary"
+                    style={{ padding: '12px 18px', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
+                  >
+                    <Download size={16} /> Download Euphony.mobileconfig
+                  </a>
+                  <div style={{ fontSize: '12.5px', color: '#64748B', lineHeight: '1.45', background: '#F8FAFC', padding: '10px 14px', borderRadius: '10px' }}>
+                    1. Tap the download button above and tap <strong>Allow</strong> in Safari.<br />
+                    2. Open your iPhone/iPad <strong>Settings</strong> ➔ tap <strong>"Profile Downloaded"</strong> at the top.<br />
+                    3. Tap <strong>Install</strong> in the top-right corner. The official Euphony icon will appear on your Home Screen!
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#0F172A' }}>Method 2: Safari 1-Tap Home Screen</div>
+                  <div style={{ fontSize: '12.5px', color: '#475569', lineHeight: '1.5', background: '#F8FAFC', padding: '10px 14px', borderRadius: '10px' }}>
+                    1. In Safari, navigate to <strong>euphony-music.vercel.app</strong>.<br />
+                    2. Tap the <strong>Share</strong> button (box with upward arrow) at the bottom.<br />
+                    3. Scroll and select <strong>"Add to Home Screen"</strong>, then tap <strong>Add</strong>.
+                  </div>
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: '#0066FF', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', flexShrink: 0 }}>2</span>
-                <span>Tap the <strong>Share</strong> button (box with an arrow pointing up) at the bottom of the screen.</span>
+            )}
+
+            {/* macOS Specific Content */}
+            {activePlatformModal.id === 'mac' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '24px' }}>
+                <div style={{ padding: '14px', borderRadius: '14px', background: 'rgba(0, 102, 255, 0.08)', border: '1px solid rgba(0, 102, 255, 0.2)', fontSize: '13px', color: '#1E293B', lineHeight: '1.5' }}>
+                  <strong>How to bypass macOS Gatekeeper:</strong> Apple blocks apps downloaded from the web that are not distributed through the Mac App Store. Follow the steps below to bypass this warning and launch Euphony instantly!
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <a
+                    href="/downloads/Euphony-mac.zip"
+                    download="Euphony-mac.zip"
+                    className="btn-primary"
+                    style={{ padding: '12px 18px', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
+                  >
+                    <Download size={16} /> Download Euphony for Mac (.zip)
+                  </a>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: '#334155', lineHeight: '1.5' }}>
+                  <div style={{ background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Step 1: Unzip & Move to Applications</div>
+                    <span>Unzip <strong>Euphony-mac.zip</strong> and drag <strong>Euphony.app</strong> into your Mac's <code>/Applications</code> folder.</span>
+                  </div>
+
+                  <div style={{ background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Step 2: The Control-Click Gatekeeper Bypass</div>
+                    <span>When macOS warns that the app cannot be opened: <strong>Right-Click (or hold Control and click)</strong> on <code>Euphony.app</code>, select <strong>"Open"</strong> from the menu, and then click <strong>"Open"</strong> on the dialog. macOS will permanently whitelist the app!</span>
+                  </div>
+
+                  <div style={{ background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                    <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Alternative 1-Click: Safari "Add to Dock"</div>
+                    <span>Open Safari on your Mac, go to <strong>euphony-music.vercel.app</strong>, and click <strong>File ➔ Add to Dock</strong>. It runs as a native verified macOS app with 0 warnings!</span>
+                  </div>
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: '#0066FF', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', flexShrink: 0 }}>3</span>
-                <span>Scroll down and tap <strong>"Add to Home Screen"</strong>, then tap <strong>Add</strong> in the top right.</span>
+            )}
+
+            {/* Windows Specific Content */}
+            {activePlatformModal.id === 'windows' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '24px' }}>
+                <div style={{ padding: '14px', borderRadius: '14px', background: 'rgba(0, 102, 255, 0.08)', border: '1px solid rgba(0, 102, 255, 0.2)', fontSize: '13px', color: '#1E293B', lineHeight: '1.5' }}>
+                  <strong>Windows SmartScreen Bypass:</strong> Because this is an official direct release outside the Microsoft Store, Windows Defender SmartScreen may display a warning.
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <a
+                    href="/downloads/Euphony-Setup.exe"
+                    download="Euphony-Setup.exe"
+                    className="btn-primary"
+                    style={{ padding: '12px 18px', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
+                  >
+                    <Download size={16} /> Download Euphony-Setup.exe
+                  </a>
+                </div>
+
+                <div style={{ fontSize: '13px', color: '#334155', lineHeight: '1.5', background: '#F8FAFC', padding: '12px 14px', borderRadius: '12px' }}>
+                  <div style={{ fontWeight: '700', color: '#0F172A', marginBottom: '4px' }}>Bypass Instructions:</div>
+                  1. Run <strong>Euphony-Setup.exe</strong>.<br />
+                  2. If "Windows protected your PC" appears, click <strong>"More info"</strong>.<br />
+                  3. Click <strong>"Run anyway"</strong> to complete installation and launch Euphony!
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: '#0066FF', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: '800', flexShrink: 0 }}>4</span>
-                <span>Launch Euphony directly from your home screen. It will run in full-screen standalone mode with background audio!</span>
-              </div>
-            </div>
+            )}
 
             <button
               onClick={() => { setActivePlatformModal(null); handleOpenWebPlayer(); }}
               className="btn-primary"
               style={{ width: '100%', padding: '14px', borderRadius: '14px', fontSize: '15px' }}
             >
-              Open Web Player on iOS →
+              Open Web Player Online with Auto-Login →
             </button>
           </div>
         </div>

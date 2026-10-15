@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+*.exe
+public/downloads/*.exe
+.env
+.env.local
+.DS_Store
+Thumbs.db

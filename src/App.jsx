@@ -150,7 +150,7 @@ export default function App() {
       tagline: 'Android 7.0 and up',
       icon: Smartphone,
       filename: 'Euphony.apk',
-      size: '4.7 MB',
+      size: '8.9 MB',
       version: 'v1.0.0',
       downloadUrl: '/downloads/Euphony.apk',
       description: 'Official standalone Android package (.apk) with lock-screen notification player and background audio.',
@@ -847,7 +847,7 @@ export default function App() {
                       gap: '8px'
                     }}
                   >
-                    <Download size={16} /> Download .apk (4.7 MB)
+                    <Download size={16} /> Download .apk (8.9 MB)
                   </a>
                 )}
 
@@ -1101,7 +1101,7 @@ export default function App() {
                     className="btn-primary"
                     style={{ padding: '12px 18px', borderRadius: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none', background: 'linear-gradient(135deg, #10B981, #059669)' }}
                   >
-                    <Download size={16} /> Download Euphony.apk (4.7 MB)
+                    <Download size={16} /> Download Euphony.apk (8.9 MB)
                   </a>
                 </div>
 

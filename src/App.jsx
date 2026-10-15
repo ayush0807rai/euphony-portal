@@ -42,6 +42,40 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Prevent text selection and image dragging globally
+  useEffect(() => {
+    const handleDragStart = (e) => {
+      e.preventDefault();
+      return false;
+    };
+
+    const handleSelectStart = (e) => {
+      const tag = e.target?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) {
+        return true;
+      }
+      e.preventDefault();
+      return false;
+    };
+
+    const handleContextMenu = (e) => {
+      if (e.target?.tagName === 'IMG' || e.target?.closest?.('img')) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    document.addEventListener('dragstart', handleDragStart, { passive: false });
+    document.addEventListener('selectstart', handleSelectStart, { passive: false });
+    document.addEventListener('contextmenu', handleContextMenu, { passive: false });
+
+    return () => {
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('selectstart', handleSelectStart);
+      document.removeEventListener('contextmenu', handleContextMenu);
+    };
+  }, []);
+
   // Handle open web player (with auth check)
   const handleOpenWebPlayer = () => {
     if (!user) {
@@ -128,7 +162,7 @@ export default function App() {
           {/* Logo & Brand */}
           <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '40px', height: '40px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0, 102, 255, 0.25)', border: '1.5px solid #E2E8F0' }}>
-              <img src="/logo.png" alt="Euphony" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/logo.png" alt="Euphony" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <span style={{ fontSize: '22px', fontWeight: '800', color: '#0F172A', letterSpacing: '-0.5px' }}>
               Euphony
@@ -825,7 +859,7 @@ export default function App() {
             {/* Brand column */}
             <div style={{ maxWidth: '320px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-                <img src="/logo.png" alt="Euphony" style={{ width: '32px', height: '32px', borderRadius: '8px' }} />
+                <img src="/logo.png" alt="Euphony" draggable={false} style={{ width: '32px', height: '32px', borderRadius: '8px' }} />
                 <span style={{ fontSize: '20px', fontWeight: '800', color: '#FFFFFF' }}>Euphony</span>
               </div>
               <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#64748B' }}>

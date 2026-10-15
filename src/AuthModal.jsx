@@ -125,7 +125,7 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, defaultTab =
             boxShadow: '0 8px 20px rgba(0, 102, 255, 0.25)',
             border: '2px solid #E2E8F0'
           }}>
-            <img src="/logo.png" alt="Euphony Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src="/logo.png" alt="Euphony Logo" draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#0F172A', letterSpacing: '-0.5px', marginBottom: '6px' }}>
             {tab === 'signin' && 'Welcome back to Euphony'}

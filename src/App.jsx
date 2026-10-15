@@ -83,15 +83,26 @@ export default function App() {
     };
   }, []);
 
-  // Handle open web player (with auth check)
-  const handleOpenWebPlayer = () => {
+  // Handle open web player (with seamless cross-domain SSO)
+  const handleOpenWebPlayer = async () => {
     if (!user) {
       setRedirectAfterLogin(true);
       setAuthDefaultTab('signin');
       setAuthModalOpen(true);
-    } else {
-      window.open(WEB_PLAYER_URL, '_blank', 'noopener,noreferrer');
+      return;
     }
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token && session?.refresh_token) {
+        const ssoUrl = `${WEB_PLAYER_URL}/#access_token=${encodeURIComponent(session.access_token)}&refresh_token=${encodeURIComponent(session.refresh_token)}&token_type=bearer`;
+        window.open(ssoUrl, '_blank', 'noopener,noreferrer');
+        return;
+      }
+    } catch (e) {
+      console.warn("Could not retrieve session tokens for SSO:", e);
+    }
+    window.open(WEB_PLAYER_URL, '_blank', 'noopener,noreferrer');
   };
 
   const handleSignOut = async () => {
@@ -880,7 +891,7 @@ export default function App() {
               <div>
                 <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#FFFFFF', marginBottom: '14px' }}>Player</h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
-                  <a href={WEB_PLAYER_URL} target="_blank" rel="noreferrer" style={{ color: '#94A3B8', transition: 'color 0.2s' }}>Open Web Player</a>
+                  <button onClick={handleOpenWebPlayer} style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', color: '#94A3B8', transition: 'color 0.2s', cursor: 'pointer', fontSize: '13px' }}>Open Web Player</button>
                   <a href="#download" style={{ color: '#94A3B8', transition: 'color 0.2s' }}>Windows App (.exe)</a>
                   <a href="#download" style={{ color: '#94A3B8', transition: 'color 0.2s' }}>Android App (.apk)</a>
                   <a href="#download" style={{ color: '#94A3B8', transition: 'color 0.2s' }}>macOS & iOS</a>
@@ -928,12 +939,22 @@ export default function App() {
           setRedirectAfterLogin(false);
         }}
         defaultTab={authDefaultTab}
-        onAuthSuccess={(authedUser) => {
+        onAuthSuccess={async (authedUser) => {
           setUser(authedUser);
           setAuthModalOpen(false);
           if (redirectAfterLogin) {
-            window.open(WEB_PLAYER_URL, '_blank', 'noopener,noreferrer');
             setRedirectAfterLogin(false);
+            try {
+              const { data: { session } } = await supabase.auth.getSession();
+              if (session?.access_token && session?.refresh_token) {
+                const ssoUrl = `${WEB_PLAYER_URL}/#access_token=${encodeURIComponent(session.access_token)}&refresh_token=${encodeURIComponent(session.refresh_token)}&token_type=bearer`;
+                window.open(ssoUrl, '_blank', 'noopener,noreferrer');
+                return;
+              }
+            } catch (e) {
+              console.warn("Could not retrieve session for SSO:", e);
+            }
+            window.open(WEB_PLAYER_URL, '_blank', 'noopener,noreferrer');
           }
         }}
       />
